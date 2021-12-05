@@ -87,12 +87,6 @@ if __name__ == "__main__":
 
 	grid = create_grid( max_x, max_y )
 	populate_grid( grid, line_equations )
-	print( grid )
-
-	#b = np.where( grid > 1 )
-	#print( b )
-	#total = int( np.sum( grid[ b ] ) )
-	#print( "total: {}".format( total ) )
 
 	total = int( ( grid > 1 ).sum( ) )
 	print( "total: {}".format( total ) )
