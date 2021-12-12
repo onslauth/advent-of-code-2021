@@ -226,11 +226,9 @@ def add_flashes_to_image( image, flashes ):
 		radius = i[ "size" ]
 
 		if radius < 50:
-			cv2.circle( image, ( x, y ), radius + 6,  ( 120, 120, 120 ), 3 )
-			cv2.circle( image, ( x, y ), radius + 3,  ( 204, 204, 204 ), 2 )
-			cv2.circle( image, ( x, y ), radius, ( 255, 255, 255 ), 3 )
-			if radius - 2 > 0:
-				cv2.circle( image, ( x, y ), radius - 2, ( 200, 200, 200 ), 2 )
+			cv2.circle( image, ( x, y ), radius + 4,  ( 120, 120, 120 ), 15 )
+			cv2.circle( image, ( x, y ), radius + 2,  ( 204, 204, 204 ), 15 )
+			cv2.circle( image, ( x, y ), radius, ( 255, 255, 255 ), 15 )
 
 	return image
 
@@ -261,7 +259,7 @@ def create_video_period( octo_img, octo_dict, octo_grid, flashes, width, step ):
 		images.append( image )
 
 		for j in flashes:
-			j[ "size" ] += 5
+			j[ "size" ] += 2
 
 	return images
 
