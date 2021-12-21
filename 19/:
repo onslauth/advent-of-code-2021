@@ -1,0 +1,67 @@
+import argparse
+import sys
+import numpy as np
+import ast
+
+ap = argparse.ArgumentParser( )
+ap.add_argument( "-i", "--input", required = True, help = "Path to input file" )
+args = vars( ap.parse_args( ) )
+
+def split_word( string ):
+	a = [ ]
+	for i in list( string ):
+		a.append( i )
+	return a
+
+def get_input( filename ):
+	fp = open( filename, "r" )
+
+	sensors = [ ]
+
+	lines = fp.read( ).rstrip( "\n" )
+
+	group = lines.split( "\n\n" )
+	for i in group:
+		data = i.split( "\n" )
+
+		name = data[ 0 ]
+
+		coords = [ ]
+
+		for j in data[ 1: ]:
+			x, y, z = j.split( "," )
+			coords.append( [ int( x ), int( y ), int( z ) ] )
+
+		coords = np.array( coords )
+
+		s = {
+			"name":   name,
+			"coords": coords,
+		}
+		sensors.append( s )
+
+	return sensors
+
+def calculate_line_lengths_for_sensor( s ):
+
+	points = s[ "coords" ]
+
+	for i in range( len( points ) - 1 )
+		x1, y1, z1 = 
+		for j in range( len( s[ "coords" ][ i: ] ) - 1 ):
+			x2, y2, z1 = j
+
+			print( i, j )
+
+
+def print_sensor( s ):
+	print( "{}".format( s[ "name" ] ) )
+	print( "  coords:" )
+	for i in s[ "coords" ]:
+		x, y, z = i
+		print( "    {:>6}, {:>6}, {:>6}".format( x, y, z ) )
+
+if __name__ == "__main__":
+	sensors = get_input( args[ "input" ] )
+	calculate_line_lengths_for_sensor( sensors[ 0 ] )
+
