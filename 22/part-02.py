@@ -84,6 +84,8 @@ def collate_points( steps ):
 def run_steps( steps, grid, x, y, z ):
 	cache = set( )
 
+	sum_on = 0
+
 	for s in steps:
 		state = s[ 0 ]
 
@@ -107,20 +109,24 @@ def run_steps( steps, grid, x, y, z ):
 				for k in range( iz1, iz2 ):
 					grid[ i ][ j ][ k ] = state
 					if state == 1:
-						cache.add( ( i, j, k ) )
+						if ( i, j, k ) not in cache:
+							sum_on += ( x[ i + 1 ] - x[ i ] ) * ( y[ j + 1 ] - y[ j ] ) * ( z[ k + 1 ] - z[ k ] )
+							cache.add( ( i, j, k ) )
 					else:
 						if ( i, j, k ) in cache:
+							sum_on -= ( x[ i + 1 ] - x[ i ] ) * ( y[ j + 1 ] - y[ j ] ) * ( z[ k + 1 ] - z[ k ] )
 							cache.remove( ( i, j, k ) )
 
-	return cache
+	print( sum_on )
 
 if __name__ == "__main__":
 	steps = get_input( args[ "input" ] )
 
 	
 	grid, x, y, z = collate_points( steps )
-	cache = run_steps( steps, grid, x, y, z )
+	run_steps( steps, grid, x, y, z )
 
+	exit( 0 )
 	sum_on = 0
 
 	for c in cache:
