@@ -82,6 +82,7 @@ def collate_points( steps ):
 	return grid, x, y, z
 
 def run_steps( steps, grid, x, y, z ):
+	cache = set( )
 
 	for s in steps:
 		state = s[ 0 ]
@@ -99,33 +100,64 @@ def run_steps( steps, grid, x, y, z ):
 		iz1 = z.index( z1 )
 		iz2 = z.index( z2 )
 
-		grid[ ix1:ix2, iy1:iy2, iz1:iz2 ] = state
+		#grid[ ix1:ix2, iy1:iy2, iz1:iz2 ] = state
 
-		#for i in range( ix1, ix2 ):
-		#	for j in range( iy1, iy2 ):
-		#		for k in range( iz1, iz2 ):
-		#			grid[ i ][ j ][ k ] = state
+		for i in range( ix1, ix2 ):
+			for j in range( iy1, iy2 ):
+				for k in range( iz1, iz2 ):
+					grid[ i ][ j ][ k ] = state
+					if state == 1:
+						cache.add( ( i, j, k ) )
+					else:
+						if ( i, j, k ) in cache:
+							cache.remove( ( i, j, k ) )
 
+	return cache
 
 if __name__ == "__main__":
 	steps = get_input( args[ "input" ] )
+
 	
 	grid, x, y, z = collate_points( steps )
-	run_steps( steps, grid, x, y, z )
-
-	n = len( x )
+	cache = run_steps( steps, grid, x, y, z )
 
 	sum_on = 0
+
+	for c in cache:
+		i, j, k = c
+		sum_on += ( x[ i + 1 ] - x[ i ] ) * ( y[ j + 1 ] - y[ j ] ) * ( z[ k + 1 ] - z[ k ] )
+
+	print( sum_on )
+	exit( 0 )
+
+	n = len( x )
+	print( n )
+
+	b = np.where( grid > 0 )
+
+	points = zip( b[ 0 ], b[ 1 ], b[ 2 ] )
+
+	for p in points:
+		i, j, k = p
+		print( i, j, k )
+
+		sum_on += ( x[ i + 1 ] - x[ i ] ) * ( y[ j + 1 ] - y[ j ] ) * ( z[ k + 1 ] - z[ k ] )
+
+	print( sum_on )
+	exit( 0 )
+		
+
 
 	# This is really slow.
 	for i in range( 0, n - 1 ):
 		for j in range( 0, n - 1 ):
 			for k in range( 0, n - 1 ):
+				print( i, j, k )
 				state = grid[ i ][ j ][ k ]
 				if state == 0:
 					continue
 
-				sum_on += state * ( x[ i + 1 ] - x[ i ] ) * ( y[ j + 1 ] - y[ j ] ) * ( z[ k + 1 ] - z[ k ] )
+				sum_on += ( x[ i + 1 ] - x[ i ] ) * ( y[ j + 1 ] - y[ j ] ) * ( z[ k + 1 ] - z[ k ] )
 
 	print( "sum_on: {}".format( sum_on ) )
 
